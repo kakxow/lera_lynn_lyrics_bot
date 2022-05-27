@@ -4,6 +4,7 @@ import dotenv
 
 dotenv.load_dotenv()
 
+twitter_message_limit = 280
 lyrics_api = "http://api.musixmatch.com/ws/1.1/"
 lyrics_token = os.environ["MUSIXMATCH_TOKEN"]
 lyrics_params = {"apikey": lyrics_token}
