@@ -97,7 +97,7 @@ def get_random_quote(artist: str) -> str | None:
     tracks_urls = _get_all_tracks_urls(artist)
     url = random.choice(tracks_urls)
     text = _get_lyrics_from_url(url)
-    print(url)
+    print("random quote from here", url)
     if text:
         quote = _get_quote(text)
         if quote:
@@ -117,3 +117,5 @@ def get_random_quote_sure(artist: str) -> str:
             else:
                 print("failed to find quote", url)
         print("failed to find text", url)
+
+
