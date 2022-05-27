@@ -1,4 +1,4 @@
-from twitter_bot import send_tweet
+from ifttt import send_tweet
 from lyrics import get_random_quote
 
 artist = "Lera Lynn"

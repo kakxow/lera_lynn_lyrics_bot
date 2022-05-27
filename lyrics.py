@@ -13,9 +13,13 @@ def _get_all_tracks_urls(artist: str) -> list[str]:
     page = 1
     params = lyrics_params | {"q_artist": artist, "page_size": 100, "page": page}
     while 1:
-        r = requests.get(url_search, params=params)
-        response_data = r.json()
-        track_list = response_data["message"]["body"]["track_list"]
+        response = requests.get(url_search, params=params)
+        response.raise_for_status()
+        response_data = response.json()
+        try:
+            track_list = response_data["message"]["body"]["track_list"]
+        except TypeError:
+            breakpoint()
         if not track_list:
             break
         for track in track_list:
@@ -39,10 +43,11 @@ def _get_lyrics_from_url(url: str) -> str | None:
 
 
 def _prepare_quotes(text: str) -> list[str]:
-    """make verses with more than one lin"""
+    """make verses with more than one line"""
     quotes: list[str] = []
     quote = ""
     for line in text.split("\n"):
+        line = line.strip()
         if line:
             quote += line + "\n"
         elif len(quote.split("\n")) > 1:
@@ -96,3 +101,15 @@ def get_random_quote(artist: str) -> str | None:
         if quote:
             return quote
     return None
+
+
+def get_random_quote_sure(artist: str) -> str:
+    tracks_urls = _get_all_tracks_urls(artist)
+    while 1:
+        url = random.choice(tracks_urls)
+        text = _get_lyrics_from_url(url)
+        if text:
+            quote = _get_quote(text)
+            if quote:
+                return quote
+        print(url)
