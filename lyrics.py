@@ -44,28 +44,28 @@ def _get_lyrics_from_url(url: str) -> str | None:
     return a[-1].text  # type: ignore
 
 
-def _prepare_quotes(text: str) -> list[str]:
-    """make verses with more than one line"""
-    quotes: list[str] = []
-    quote = ""
+def split_to_verses(text: str) -> list[str]:
+    """makes verses longer than one line"""
+    verses: list[str] = []
+    verse = []
     for line in text.split("\n"):
         line = line.strip()
         if line:
-            quote += line + "\n"
-        elif len(quote.split("\n")) > 1:
-            quotes.append(quote)
+            verse.append(line)
+        elif len(verse) > 1:
+            verses.append("\n".join(verse))
     else:
-        quotes.append(quote)
-    return quotes
+        verses.append("\n".join(verse))
+    return verses
 
 
 def _get_quote(text: str) -> str | None:
-    prepared_quotes = _prepare_quotes(text)
-    quotes = [q for q in prepared_quotes if len(q) < twitter_message_limit]
-    if not quotes:
-        quote = _get_random_lines("\n".join(prepared_quotes), 4)
+    prepared_verses = split_to_verses(text)
+    verses = [q for q in prepared_verses if len(q) < twitter_message_limit]
+    if not verses:
+        quote = _get_random_lines("\n".join(prepared_verses), 4)
     else:
-        quote = random.choice(quotes)
+        quote = random.choice(verses)
     return quote
 
 
