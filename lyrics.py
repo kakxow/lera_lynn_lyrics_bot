@@ -24,6 +24,8 @@ def _get_all_tracks_urls(artist: str) -> list[str]:
             break
         for track in track_list:
             track_url = track["track"]["track_share_url"]
+            if "?" in track_url:
+                track_url, _ = track_url.split("?")
             all_tracks_urls.append(track_url)
         page += 1
         params.update({"page": page})
@@ -112,4 +114,6 @@ def get_random_quote_sure(artist: str) -> str:
             quote = _get_quote(text)
             if quote:
                 return quote
-        print(url)
+            else:
+                print("failed to find quote", url)
+        print("failed to find text", url)
