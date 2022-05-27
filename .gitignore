@@ -131,3 +131,4 @@ texts/
 *.html
 junk.py
 test.py
+.vscode/
